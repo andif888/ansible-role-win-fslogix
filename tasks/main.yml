@@ -1,0 +1,54 @@
+---
+# tasks file for ansible-role-win-fslogix
+- name: Ensure extract dir exists
+  win_file:
+    path: '{{ fslogix_extract_dir }}'
+    state: directory
+
+- name: Download FSLogix
+  win_get_url:
+    url: '{{ fslogix_download_url }}'
+    dest: '{{ fslogix_extract_dir }}\fslogix.zip'
+    force: no
+
+- name: Unzip FSLogix
+  win_unzip:
+    src: '{{ fslogix_extract_dir }}\fslogix.zip'
+    dest: '{{ fslogix_extract_dir }}'
+
+- name: Install FSLogix Service
+  win_package:
+    path: '{{ fslogix_extract_dir }}\x64\Release\FSLogixAppsSetup.exe'
+    product_id: '{{ fslogix_service_product_id }}'
+    state: present
+    arguments: /quiet /norestart
+  register: fslogix_service_install_result
+
+- debug:
+    var: fslogix_service_install_result
+  when: fslogix_service_install_result is defined
+
+- name: Reboot when fslogix_service requires it
+  win_reboot:
+  when: ((fslogix_service_install_result.reboot_required) or
+        (fslogix_service_install_result.changed)) and
+        (fslogix_no_restart == false)
+
+- name: Install FSLogix Rule Editor
+  win_package:
+    path: '{{ fslogix_extract_dir }}\x64\Release\FSLogixAppsRuleEditorSetup.exe'
+    product_id: '{{ fslogix_rule_editor_product_id }}'
+    state: present
+    arguments: /quiet
+  when: fslogix_rule_editor_install
+
+- name: Copy FSLogix Rule Files
+  win_copy:
+    src: '{{ fslogix_rule_files_contents }}'
+    dest: '%ProgramFiles%\FSLogix\Apps\Rules'
+  when: fslogix_rule_files_contents | length > 0
+
+- name: Remove extract dir exists
+  win_file:
+    path: '{{ fslogix_extract_dir }}'
+    state: absent
