@@ -1,0 +1,65 @@
+---
+# FSLogix Office Container
+
+- name: Office Container - Enable FSLogix Office Container
+  win_regedit:
+    path: HKLM:\Software\Policies\FSLogix\ODFC
+    name: Enabled
+    data: '{{ fslogix_officecontainer_enabled | bool | ternary(1, 0) }}'
+    type: dword
+    state: present
+
+- name: Office Container - SizeInMBs
+  win_regedit:
+    path: HKLM:\Software\Policies\FSLogix\ODFC
+    name: SizeInMBs
+    data: '{{ fslogix_officecontainer_size_in_mbs }}'
+    type: dword
+    state: "{{ fslogix_officecontainer_enabled | bool | ternary('present', 'absent') }}"
+
+- name: Office Container - VHDAccessMode
+  win_regedit:
+    path: HKLM:\Software\Policies\FSLogix\ODFC
+    name: VHDAccessMode
+    data: '{{ fslogix_officecontainer_vhd_access_mode }}'
+    type: dword
+    state: "{{ fslogix_officecontainer_enabled | bool | ternary('present', 'absent') }}"
+
+- name: Office Container - VHDLocations
+  win_regedit:
+    path: HKLM:\Software\Policies\FSLogix\ODFC
+    name: VHDLocations
+    data: '{{ fslogix_officecontainer_vhd_locations | list }}'
+    type: multistring
+    state: "{{ fslogix_officecontainer_enabled | bool | ternary('present', 'absent') }}"
+
+- name: Office Container - VHDXSectorSize
+  win_regedit:
+    path: HKLM:\Software\Policies\FSLogix\ODFC
+    name: VHDXSectorSize
+    data: '{{ fslogix_officecontainer_vhd_sector_size }}'
+    type: dword
+    state: "{{ fslogix_officecontainer_enabled | bool | ternary('present', 'absent') }}"
+
+- name: Office Container - VolumeType
+  win_regedit:
+    path: HKLM:\Software\Policies\FSLogix\ODFC
+    name: VolumeType
+    data: '{{ fslogix_officecontainer_volume_type }}'
+    type: string
+    state: "{{ fslogix_officecontainer_enabled | bool | ternary('present', 'absent') }}"
+
+- name: Office Container - IncludeTeams
+  win_regedit:
+    path: HKLM:\Software\Policies\FSLogix\ODFC
+    name: IncludeTeams
+    data: '{{ fslogix_officecontainer_include_teams }}'
+    type: dword
+    state: "{{ fslogix_officecontainer_enabled | bool | ternary('present', 'absent') }}"
+
+- name: Office Container - Exclude Group
+  win_group_membership:
+    name: FSLogix ODFC Exclude list
+    members: '{{ fslogix_officecontainer_exclude_list }}'
+    state: "{{ fslogix_officecontainer_enabled | bool | ternary('present', 'absent') }}"
+...

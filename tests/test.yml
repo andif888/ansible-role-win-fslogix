@@ -1,5 +1,10 @@
 ---
 - hosts: localhost
   remote_user: root
+  vars:
+    fslogix_profilecontainer_use_config: true
+    fslogix_profilecontainer_enabled: true
+    fslogix_profilecontainer_vhd_locations:
+      - '\\fileserver\fslogixprofiles'
   roles:
     - ansible-role-win-fslogix
