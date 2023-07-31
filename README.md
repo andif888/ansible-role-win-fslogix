@@ -30,7 +30,9 @@ Role to install FSLogix on Windows.
   - [fslogix_rule_editor_install](#fslogix_rule_editor_install)
   - [fslogix_rule_editor_product_id](#fslogix_rule_editor_product_id)
   - [fslogix_rule_files_contents](#fslogix_rule_files_contents)
+  - [fslogix_service_install_args](#fslogix_service_install_args)
   - [fslogix_service_product_id](#fslogix_service_product_id)
+  - [fslogix_service_uninstall](#fslogix_service_uninstall)
 - [Dependencies](#dependencies)
 - [License](#license)
 - [Author](#author)
@@ -293,6 +295,17 @@ Directory path which contains rule files to copy
 fslogix_rule_files_contents: ''
 ```
 
+### fslogix_service_install_args
+
+Installer arguments
+
+#### Default value
+
+```YAML
+fslogix_service_install_args: "{{ fslogix_service_uninstall | bool | ternary('/uninstall\
+  \ /quiet /norestart', '/install /quiet /norestart') }}"
+```
+
 ### fslogix_service_product_id
 
 product id to check if already installed
@@ -301,6 +314,16 @@ product id to check if already installed
 
 ```YAML
 fslogix_service_product_id: '{18F03C3D-4235-4F6A-A222-B13BA34F25C8}'
+```
+
+### fslogix_service_uninstall
+
+Switch to uninstall FSLogix service
+
+#### Default value
+
+```YAML
+fslogix_service_uninstall: false
 ```
 
 
