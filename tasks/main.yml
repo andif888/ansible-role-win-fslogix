@@ -3,8 +3,12 @@
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup.yml"
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/config_profilecontainer.yml"
-  when: fslogix_profilecontainer_use_config
+  when:
+    - fslogix_profilecontainer_use_config
+    - not fslogix_service_uninstall
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/config_officecontainer.yml"
-  when: fslogix_officecontainer_use_config
+  when:
+    - fslogix_officecontainer_use_config
+    - not fslogix_service_uninstall
 ...

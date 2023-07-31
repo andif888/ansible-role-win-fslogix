@@ -26,7 +26,7 @@
     path: '{{ fslogix_extract_dir }}\x64\Release\FSLogixAppsSetup.exe'
     product_id: '{{ fslogix_service_product_id }}'
     state: present
-    arguments: /quiet /norestart
+    arguments: "{{ fslogix_service_install_args }}"
   register: fslogix_service_install_result
 
 - name: Debug fslogix_service_install_result
@@ -46,13 +46,17 @@
     product_id: '{{ fslogix_rule_editor_product_id }}'
     state: present
     arguments: /quiet
-  when: fslogix_rule_editor_install
+  when:
+  - fslogix_rule_editor_install
+  - not fslogix_service_uninstall
 
 - name: Copy FSLogix Rule Files
   ansible.windows.win_copy:
     src: '{{ fslogix_rule_files_contents }}'
     dest: '%ProgramFiles%\FSLogix\Apps\Rules'
-  when: fslogix_rule_files_contents | length > 0
+  when:
+    - fslogix_rule_files_contents | length > 0
+    - not fslogix_service_uninstall
 
 - name: Remove extract dir exists
   ansible.windows.win_file:
