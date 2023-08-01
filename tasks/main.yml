@@ -14,7 +14,7 @@
     - fslogix_officecontainer_use_config
     - not fslogix_service_uninstall
 
-- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup.yml"
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/uninstall.yml"
   when:
     - fslogix_service_uninstall
 

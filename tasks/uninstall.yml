@@ -1,4 +1,18 @@
 ---
+- name: Stop FSLogix Service
+  ansible.windows.win_service:
+    name: "frxsvc"
+    start_mode: "manual"
+    state: "stopped"
+  ignore_errors: true
+
+- name: Stop FSLogix Service
+  ansible.windows.win_service:
+    name: "frxccds"
+    start_mode: "manual"
+    state: "stopped"
+  ignore_errors: true
+
 - name: Uninstall FSlogix
   ansible.windows.win_package:
     product_id: '{8FCB8581-01A9-4563-9D5F-273D4C67ABD2}'
