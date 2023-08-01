@@ -1,0 +1,11 @@
+---
+- name: Uninstall FSlogix
+  ansible.windows.win_package:
+    product_id: '{8FCB8581-01A9-4563-9D5F-273D4C67ABD2}'
+    state: absent
+
+- name: Uninstall FSlogix Driver
+  ansible.windows.win_package:
+    product_id: '{F376B9DF-D3D5-4FEB-AFE5-A40A8EBE27F7}'
+    state: absent
+...

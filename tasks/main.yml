@@ -1,6 +1,8 @@
 ---
 # tasks file for ansible-role-win-fslogix
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup.yml"
+  when:
+    - not fslogix_service_uninstall
 
 - ansible.builtin.import_tasks: "{{ role_path }}/tasks/config_profilecontainer.yml"
   when:
@@ -11,4 +13,9 @@
   when:
     - fslogix_officecontainer_use_config
     - not fslogix_service_uninstall
+
+- ansible.builtin.import_tasks: "{{ role_path }}/tasks/setup.yml"
+  when:
+    - fslogix_service_uninstall
+
 ...
