@@ -17,7 +17,7 @@
   ansible.windows.win_package:
     product_id: '{8FCB8581-01A9-4563-9D5F-273D4C67ABD2}'
     state: absent
-    register: fslogix_service_uninstall_result1
+  register: fslogix_service_uninstall_result1
 
 - name: Uninstall FSlogix Driver
   ansible.windows.win_package:
