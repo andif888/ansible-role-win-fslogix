@@ -31,10 +31,39 @@
     state: absent
   register: fslogix_service_uninstall_result3
 
+
+- name: Uninstall FSlogix 2.9.8612.60056
+  ansible.windows.win_package:
+    product_id: '{487528C7-C919-4624-8C8E-BBC0330DC947}'
+    state: absent
+  register: fslogix_service_uninstall_result4
+
+- name: Uninstall FSlogix Driver 2.9.8612.60056
+  ansible.windows.win_package:
+    product_id: '{4F214445-2DCC-44CE-BBA7-64AB8FBEC0E2}'
+    state: absent
+  register: fslogix_service_uninstall_result5
+
+- name: Uninstall FSlogix Wow6432 2.9.8612.60056
+  ansible.windows.win_package:
+    product_id: '{79c208be-24e1-4728-a2e1-ad3c188ff425}'
+    state: absent
+  register: fslogix_service_uninstall_result6
+
+- name: Uninstall FSlogix Wow6432 2.9.8612.60056
+  ansible.windows.win_package:
+    product_id: '{ade61a8f-0434-4f2b-84d4-fa6647593446}'
+    state: absent
+  register: fslogix_service_uninstall_result7
+
 - name: Reboot when fslogix_service requires it
   ansible.windows.win_reboot:
   when: ((fslogix_service_uninstall_result1.reboot_required) or
         (fslogix_service_uninstall_result2.reboot_required) or
-        (fslogix_service_uninstall_result3.reboot_required)) and
+        (fslogix_service_uninstall_result3.reboot_required) or
+        (fslogix_service_uninstall_result4.reboot_required) or
+        (fslogix_service_uninstall_result5.reboot_required) or
+        (fslogix_service_uninstall_result6.reboot_required) or
+        (fslogix_service_uninstall_result7.reboot_required)) and
         (fslogix_no_restart == false)
 ...
